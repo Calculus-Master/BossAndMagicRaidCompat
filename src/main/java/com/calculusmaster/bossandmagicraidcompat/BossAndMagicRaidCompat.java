@@ -11,6 +11,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
+import java.util.List;
+
 @Mod(BossAndMagicRaidCompat.MODID)
 public class BossAndMagicRaidCompat
 {
@@ -18,6 +20,8 @@ public class BossAndMagicRaidCompat
 
     public BossAndMagicRaidCompat()
     {
+        BAMRConfig.register();
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -25,6 +29,11 @@ public class BossAndMagicRaidCompat
 
     private void setup(FMLCommonSetupEvent event)
     {
-        event.enqueueWork(() -> Raid.RaiderType.create(AnimatedmobsmodModEntities.MAGICIAN_KING.get().getDescriptionId(), AnimatedmobsmodModEntities.MAGICIAN_KING.get(), new int[]{0, 0, 0, 0, 0, 1, 0, 1}));
+        event.enqueueWork(() ->
+        {
+            List<? extends Integer> source = BAMRConfig.MAGICIAN_KING_WAVE_COUNTS.get().size() == 8 ? BAMRConfig.MAGICIAN_KING_WAVE_COUNTS.get() : BAMRConfig.MAGICIAN_KING_WAVE_COUNTS.getDefault();
+
+            Raid.RaiderType.create(AnimatedmobsmodModEntities.MAGICIAN_KING.get().getDescriptionId(), AnimatedmobsmodModEntities.MAGICIAN_KING.get(), source.stream().mapToInt(i -> i).toArray());
+        });
     }
 }

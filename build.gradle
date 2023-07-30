@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '1.0'
+version = '1.1'
 group = 'com.calculusmaster.bossandmagicraidcompat'
 archivesBaseName = 'bossandmagicraidcompat-1.19.2'
 
